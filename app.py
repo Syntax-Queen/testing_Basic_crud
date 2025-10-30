@@ -1,5 +1,5 @@
 # Import 
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -35,6 +35,17 @@ def index():
     return render_template("index.html", task=task)
 
 
+# delete item
+@app.route('/delete/<int:id>')
+def delete(id):
+    delete_task = MyTask.query.get_or_404(id)
+    try:
+        db.session.delete(delete_task)
+        db.session.commit()
+        return redirect('index.html')
+    
+    except Exception as e:
+        return f'An error  occurred while deleting: {e}'
 
 
 
