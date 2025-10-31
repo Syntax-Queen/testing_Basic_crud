@@ -32,23 +32,36 @@ def index():
     # see all task
     else:
         task = MyTask.query.order_by(MyTask.created).all()
-    return render_template("index.html", task=task)
+        return render_template("index.html", task=task)
 
 
 # delete item
 @app.route('/delete/<int:id>')
-def delete(id):
+def delete(id:int):
     delete_task = MyTask.query.get_or_404(id)
     try:
         db.session.delete(delete_task)
         db.session.commit()
-        return redirect('index.html')
+        return redirect('/')
     
     except Exception as e:
         return f'An error  occurred while deleting: {e}'
 
 
-
+# edit an item
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id:int):
+    task = MyTask.query.get_or_404(id)
+    if request.method == "POST":
+        task.content = request.form['content']
+        try:
+            db.session.commit()
+            return redirect('/')
+        except Exception as e:
+            return f'Error: {e}'
+        
+    else:
+        return render_template('edit.html', task=task)
 
 if __name__ == "__main__":
     app.run(debug=True)

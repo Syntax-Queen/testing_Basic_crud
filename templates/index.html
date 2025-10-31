@@ -23,9 +23,9 @@
                 <td>{{ t.content }}</td>
                 <td>{{ t.created.strftime("%Y-%m-%d") }}</td>
                 <td>
-                    <a href="/delete/{{ task.id }}">Delete</a>
+                    <a href="/delete/{{ t.id }}">Delete</a>
                     <br>
-                    <a href="/update/{{ task.id }}">Edit</a>
+                    <a href="/edit/{{ t.id }}">Edit</a>
                 </td>
             </tr>
             {% endfor %}
